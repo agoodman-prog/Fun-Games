@@ -1,0 +1,67 @@
+<html><head><base target="_blank"></head><body><button class="c-button">PLAY 1.8</button>
+<style>
+.c-button {
+  min-width: 100%;
+  font-family: inherit;
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #4682B4;
+  color: #fff;
+  padding: 0px 46px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.c-button:hover {
+  background: #B0C4DE;
+}
+
+.c-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px #cbd6ee;
+}
+
+.c-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+</style>
+
+<script>
+    var url = "https://cdn.jsdelivr.net/gh/sd592g/editor@fb136339f5ed42fc946e43a6b485ad3dd78c5c69/src/utils%252Fmain.xml";
+
+    async function openXMLAsHTML() {
+        try {
+ 
+            const decodedUrl = decodeURL(url);
+
+            const response = await fetch(decodedUrl);
+            if (!response.ok) throw new Error('Error XML');
+            let xmlText = await response.text();
+
+            const cdataStart = xmlText.indexOf('<![CDATA[') + 9;
+            const cdataEnd = xmlText.lastIndexOf(']]>');
+            if (cdataStart > 8 && cdataEnd > cdataStart) {
+                xmlText = xmlText.substring(cdataStart, cdataEnd);
+            }
+            function decodeURL(url) {
+        return url.replace(/%252F/g, '/');
+    }
+            const win = window.open('', '_blank');
+            if (!win) throw new Error('Error');
+
+            win.document.open();
+            win.document.write(xmlText);
+            win.document.close();
+        } catch (error) {
+            console.error('error:', error);
+            alert('error');
+        }
+    }
+
+    document.querySelector('.c-button').addEventListener('click', openXMLAsHTML);
+</script>
+</body></html>
